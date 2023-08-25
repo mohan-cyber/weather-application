@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .weather-container {
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 50px;
+        padding: 50px;
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .weather-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .weather-container label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .weather-container input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .weather-container button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+
+    .weather-container button:hover {
+        background-color: #0056b3;
+    }
+
+    .weather-container .weather-data {
+        margin-top: 20px;
+    }
+
+    .weather-container .error {
+        color: #d9534f;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="weather-container">
+  <h2>Weather Search</h2>
+  {% if  request.user.is_authenticated and not request.user.is_superuser  %}
+
+  <form method="post" class="weather-form">
+    {% csrf_token %}
+    <label for="location">Enter Location:</label>
+    <input type="text" name="location" required>
+    <button type="submit">Search</button>
+  </form>
+  {% else %}
+  <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+  {% endif %}
+  {% if weather_data %}
+  <div class="weather-data">
+    <h3>Weather Data for {{ location }} (Searched at {{ weather_data.LocalObservationDateTime }}):</h3>
+    <p>{{ weather_data.WeatherText }}</p>
+    <p>Temperature: {{ weather_data.Temperature.Imperial.Value }}°F / {{ weather_data.Temperature.Metric.Value }}°C</p>
+  </div>
+  {% else %}
+  <p>No weather data available.</p>
+  {% endif %}
+  {% if error %}
+  <p class="error">{{ error }}</p>
+  {% endif %}
+ 
+</div>
+{% endblock %}

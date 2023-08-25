@@ -36,7 +36,8 @@
 http://127.0.0.1:8002/admin/  (or)  http://yourip:8002/admin  
 `
 
+#### API Key for Accuweather
 
-
+`uxg6HlDTdouNvXmaogyocOFQFGVduSoI`
 
 
